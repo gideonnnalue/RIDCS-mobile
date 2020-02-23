@@ -63,7 +63,7 @@ class DataToolsScreen extends PureComponent {
     return (
       <View>
         <TopHeader>
-          please kindly select an option below to perform an action
+          Kindly select a data tool to view
         </TopHeader>
         <ScrollView contentContainerStyle={styles.screen}>
           {dummyData.map(data => (
@@ -90,8 +90,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   toolCard: {
-    width: 130,
-    height: 130,
+    width: 170,
+    height: 170,
     backgroundColor: 'white',
     margin: 7,
     borderRadius: 8,
@@ -100,12 +100,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   toolImage: {
-    width: 50,
-    height: 50,
+    width: 70,
+    height: 70,
   },
   toolText: {
     textAlign: 'center',
-    fontSize: 11,
+    fontSize: 13,
     fontWeight: 'bold',
   },
 });

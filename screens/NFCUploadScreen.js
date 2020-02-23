@@ -15,10 +15,10 @@ class NFCUploadScreen extends PureComponent {
   render() {
     return (
       <View>
-        <TopHeader>Upload Child Record to Card</TopHeader>
+        <TopHeader><Text style={styles.headingHead}>Upload Child Record to card</Text></TopHeader>
         <ScrollView style={styles.screen}>
           <View style={styles.heading}>
-            <Text style={styles.headingHead}>Upload Child Record to card</Text>
+            
             <View style={styles.headingData}>
               <Text style={styles.headingText}>
                 - Make sure the child health card is properly placed on the NFC
@@ -34,7 +34,7 @@ class NFCUploadScreen extends PureComponent {
             <View style={styles.detailsTop}>
               <Image
                 source={require('../assets/img/bebe.png')}
-                style={{width: 80, height: 80, marginRight: 10}}
+                style={{width: 150, height: 150, marginRight: 10}}
               />
               <View>
                 <Text style={styles.textBold}>
@@ -42,7 +42,7 @@ class NFCUploadScreen extends PureComponent {
                 </Text>
                 <Text style={styles.textBold}>
                   Full Name:{' '}
-                  <Text style={styles.textReg}>Michelle Teju Omoogun</Text>
+                  <Text style={styles.textReg}>Chioma Bolanle Musa</Text>
                 </Text>
                 <Text style={styles.textBold}>
                   Date of Birth: <Text style={styles.textReg}></Text>
@@ -50,16 +50,15 @@ class NFCUploadScreen extends PureComponent {
                 <Text style={styles.textBold}>
                   Birth Cert No: <Text style={styles.textReg}></Text>
                 </Text>
-              </View>
-            </View>
-            <View style={styles.detailBottom}>
-              <Text style={styles.textBold}>
+
+
+                <Text style={styles.textBold}>
                 Mother’s Name:{' '}
-                <Text style={styles.textReg}>Funmilayo Omoogun</Text>
+                <Text style={styles.textReg}>Adaobi Musa</Text>
               </Text>
               <Text style={styles.textBold}>
                 Father’s Name:{' '}
-                <Text style={styles.textReg}>Folorunsho Omoogun</Text>
+                <Text style={styles.textReg}>Gabriel Musa</Text>
               </Text>
               <Text style={styles.textBold}>
                 Village/Settlement: <Text style={styles.textReg}></Text>
@@ -73,6 +72,13 @@ class NFCUploadScreen extends PureComponent {
               <Text style={styles.textBold}>
                 State: <Text style={styles.textReg}></Text>
               </Text>
+
+
+
+              </View>
+            </View>
+            <View style={styles.detailBottom}>
+             
             </View>
           </View>
           <View style={styles.buttonContainer}>
@@ -88,7 +94,7 @@ class NFCUploadScreen extends PureComponent {
               <LinearGradient
                 colors={['#27AE60', 'rgba(33, 150, 83, 1)']}
                 style={styles.button}>
-                <Text style={styles.buttonText}>Upload info</Text>
+                <Text style={styles.buttonText}>Upload Details</Text>
               </LinearGradient>
             </TouchableOpacity>
           </View>
@@ -106,7 +112,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   headingHead: {
-    color: '#37474F',
+    color: '#ffff',
     fontSize: 18,
     fontWeight: 'bold',
   },
@@ -123,7 +129,7 @@ const styles = StyleSheet.create({
     marginVertical: 2,
   },
   detailsContainer: {
-    padding: 10,
+    padding: 30,
     justifyContent: 'center',
     alignItems: 'center',
   },
