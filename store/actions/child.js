@@ -129,8 +129,8 @@ export const addChildVaccine = (id, data) => async dispatch => {
       finalData = await Promise.all(promises);
     }
 
-    console.log(finalData);
     dispatch(loadChildRecords());
+    dispatch(loadChildTally());
   } catch (err) {
     console.log(err);
   }

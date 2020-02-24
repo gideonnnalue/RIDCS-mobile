@@ -5,7 +5,7 @@ const database_version = '1.0';
 const database_displayname = 'Polio app db';
 const database_size = 200000;
 
-SQLite.DEBUG(true);
+// SQLite.DEBUG(true);
 const db = SQLite.openDatabase(
   database_name,
   database_version,
@@ -64,7 +64,6 @@ export const insertChildRecord = (
   careGiverLastName,
   careGiverNo,
 ) => {
-  console.log('entering insertChildRecord');
   const promise = new Promise((resolve, reject) => {
     db.transaction(tx => {
       tx.executeSql(
@@ -93,13 +92,9 @@ export const insertChildRecord = (
           careGiverNo,
         ],
         (_, res) => {
-          console.log('inserted ChildRecord');
-          console.log(res);
           resolve(res);
         },
         (_, err) => {
-          console.log(err);
-          console.log('insert child record failed');
           reject(err);
         },
       );
@@ -190,11 +185,9 @@ export const insertChildVaccine = vaccinne => {
         `UPDATE child_record SET ${vaccineName} = ? WHERE id = ?`,
         [vaccineDate, childId],
         (_, res) => {
-          console.log('passed');
           resolve(res);
         },
         (_, err) => {
-          console.log('failed');
           reject(err);
         },
       );

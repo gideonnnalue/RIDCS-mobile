@@ -1,6 +1,12 @@
 import React, {PureComponent} from 'react';
 import {connect} from 'react-redux';
-import {View, Text, StyleSheet, ScrollView} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  ActivityIndicator,
+} from 'react-native';
 import {
   Table,
   TableWrapper,
@@ -55,16 +61,16 @@ class ChildDailyTallyScreen extends PureComponent {
       'COMMENTS',
     ],
     data: [
-      ['0-24 Hours', '2', '0', '0', '0', '0'],
-      ['24 Hours - 2 Weeks', '0', '', '', ''],
-      ['0-2 Weeks', '2', '', '', ''],
-      ['0-11 Months', '1', '', '', ''],
-      ['6 Weeks - 11 Months', '1', '', '', ''],
+      ['0-24 Hours', '0', '0', '0', '0', '0'],
+      ['24 Hours - 2 Weeks', '', '', '', ''],
+      ['0-2 Weeks', '0', '0', '0', '0'],
+      ['0-11 Months', '0', '0', '0', '0'],
+      ['6 Weeks - 11 Months', '0', '0', '0', '0'],
       ['12-23 Months', '', '', '', ''],
-      ['6 Weeks - 11 Months', '1', '', '', ''],
-      ['12-23 Months', '0', '', '', ''],
-      ['6 Weeks - 11 Months', '0', '', '', ''],
-      ['12-23 Months', '0', '', '', ''],
+      ['6 Weeks - 11 Months', '0', '0', '0', '0'],
+      ['12-23 Months', '', '', '', ''],
+      ['6 Weeks - 11 Months', '', '', '', ''],
+      ['12-23 Months', '', '', '', ''],
       ['6 Weeks - 11 Months', '', '', '', ''],
       ['12-23 Months', '', '', '', ''],
       ['10 Weeks - 11 Months', '', '', '', ''],
@@ -106,10 +112,59 @@ class ChildDailyTallyScreen extends PureComponent {
       ['9 Years - 14 Years', '', '', '', ''],
       ['', '', '', '', ''],
     ],
+    loading: false,
   };
 
   componentDidMount() {
     this.props.loadChildTally();
+    this.setState({loading: true});
+  }
+
+  formatVaccine(vaccines, el) {
+    let formatedVaccine = [...vaccines];
+    switch (el.vaccineName) {
+      case 'hbv':
+        formatedVaccine[0][2] = el.vaccineLength;
+        break;
+      case 'opv':
+        formatedVaccine[2][2] = el.vaccineLength;
+        break;
+      case 'bcg':
+        formatedVaccine[3][2] = el.vaccineLength;
+        break;
+      case 'opv1':
+        formatedVaccine[4][2] = el.vaccineLength;
+        break;
+      case 'penta1':
+        formatedVaccine[6][2] = el.vaccineLength;
+        break;
+      case 'rota1':
+        formatedVaccine[10][2] = el.vaccineLength;
+        break;
+      default:
+        return vaccines;
+    }
+    return formatedVaccine;
+  }
+
+  loadVaccine(vaccines) {
+    let newData = [...this.state.data];
+    vaccines.forEach(el => {
+      newData = this.formatVaccine(newData, el);
+    });
+    this.setState({data: newData, loading: false});
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.vaccines !== this.props.vaccines) {
+      this.loadVaccine(this.props.vaccines);
+    }
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.vaccines !== prevState.vaccines) {
+      return {vaccines: nextProps.vaccines};
+    } else return null;
   }
 
   dataArr = () => {
@@ -127,13 +182,19 @@ class ChildDailyTallyScreen extends PureComponent {
   render() {
     return (
       <View style={styles.container}>
-        {console.log(this.props.vaccines)}
         <View>
           <Text style={styles.dateText}>
             Date of Session: 20th February, 2020
           </Text>
           <Text style={styles.dateText}>Select Date of Session to View:</Text>
         </View>
+
+        {this.state.loading ? (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="small" color="#27AE60" />
+            <Text style={styles.loadingText}>Fetching updates...</Text>
+          </View>
+        ) : null}
 
         <ScrollView horizontal={true}>
           <ScrollView>
@@ -221,6 +282,15 @@ const styles = StyleSheet.create({
   headerRightText: {
     textAlign: 'center',
     fontWeight: 'bold',
+  },
+  loadingContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    padding: 10,
+  },
+  loadingText: {
+    marginLeft: 5,
+    color: '#bbb',
   },
 });
 
