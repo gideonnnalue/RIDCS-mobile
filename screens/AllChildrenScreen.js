@@ -43,7 +43,6 @@ const ChildTab = props => {
 
 class AllChildrenScreen extends PureComponent {
   componentDidMount() {
-    console.log(this.props.children);
     this.props.loadChildRecords();
     BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
     this.props.navigation.setOptions({
@@ -73,7 +72,6 @@ class AllChildrenScreen extends PureComponent {
     this.props
       .getChildRecord(id)
       .then(data => {
-        console.log(data);
         this.props.navigation.navigate('ChildProfile', {
           id,
           child: data,
