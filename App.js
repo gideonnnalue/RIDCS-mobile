@@ -6,6 +6,7 @@ import ReduxThunk from 'redux-thunk';
 import AppNavigation from './navigation/AppNavigation';
 
 import childReducer from './store/reducer/child';
+import vaccineReducer from './store/reducer/vaccine';
 import {init, dropChldRecordsTable} from './helper/db';
 
 init()
@@ -20,6 +21,7 @@ init()
 
 const rootReducer = combineReducers({
   child: childReducer,
+  vaccine: vaccineReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));

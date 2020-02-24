@@ -1,4 +1,5 @@
 import React, {PureComponent} from 'react';
+import {connect} from 'react-redux';
 import {View, Text, StyleSheet, ScrollView} from 'react-native';
 import {
   Table,
@@ -10,10 +11,18 @@ import {
   Cell,
 } from 'react-native-table-component';
 
+import {loadChildTally} from '../store/actions/child';
+
 class ChildDailyTallyScreen extends PureComponent {
   state = {
     tableMainHeader: ['ANTIGENS', 'FIXED SESSION', 'OUTREACH SESSION'],
-    tableSubHeader: ['Age Group', 'Tally', 'Daily Summary', 'Tally', 'Daily Summary'],
+    tableSubHeader: [
+      'Age Group',
+      'Tally',
+      'Daily Summary',
+      'Tally',
+      'Daily Summary',
+    ],
     tableSideHeader: [
       'Hep.B 0',
       'OPV 0',
@@ -99,6 +108,10 @@ class ChildDailyTallyScreen extends PureComponent {
     ],
   };
 
+  componentDidMount() {
+    this.props.loadChildTally();
+  }
+
   dataArr = () => {
     const arr = new Array(this.state.tableSideHeader.length).fill(60);
     arr[1] = 30;
@@ -114,11 +127,14 @@ class ChildDailyTallyScreen extends PureComponent {
   render() {
     return (
       <View style={styles.container}>
+        {console.log(this.props.vaccines)}
         <View>
-          <Text style={styles.dateText}>Date of Session: 20th February, 2020</Text>
+          <Text style={styles.dateText}>
+            Date of Session: 20th February, 2020
+          </Text>
           <Text style={styles.dateText}>Select Date of Session to View:</Text>
         </View>
-        
+
         <ScrollView horizontal={true}>
           <ScrollView>
             <View style={styles.tableContainer}>
@@ -208,4 +224,11 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ChildDailyTallyScreen;
+const mapStateToProps = state => ({
+  children: state.child.children,
+  vaccines: state.vaccine.vaccines,
+});
+
+export default connect(mapStateToProps, {loadChildTally})(
+  ChildDailyTallyScreen,
+);

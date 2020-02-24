@@ -1,4 +1,4 @@
-import {ADD_CHILD, SET_CHILD_RECORDS} from '../actions/actionTypes';
+import {SET_VACCINES} from '../actions/actionTypes';
 
 const INITIAL_STATE = {
   vaccines: [],
@@ -8,15 +8,10 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, {type, payload}) => {
   switch (type) {
-    case SET_CHILD_RECORDS:
+    case SET_VACCINES:
       return {
         ...state,
-        children: payload,
-      };
-    case ADD_CHILD:
-      return {
-        ...state,
-        children: [...state.children, payload],
+        vaccines: payload,
       };
     default:
       return state;
