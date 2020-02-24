@@ -11,20 +11,25 @@ import {
   TouchableOpacity,
   Dimensions,
   KeyboardAvoidingView,
+  Picker,
 } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
 import LinearGradient from 'react-native-linear-gradient';
 import {addChild} from '../store/actions/child';
 
 import HeaderButton from '../components/HeaderButton';
 import TopHeader from '../components/TopHeader';
+import moment from 'moment';
 
 class RegisterChildScreen extends PureComponent {
   state = {
-    childName: '',
+    childFirstName: '',
+    childMiddleName: '',
+    childLastName: '',
     childPos: '',
     childSex: 'male',
-    dob: '1/2/1990',
+    dob: new Date(),
     childWeight: '',
     houseNo: '',
     villageSettle: '',
@@ -36,8 +41,11 @@ class RegisterChildScreen extends PureComponent {
     motherNo: '',
     fatherName: '',
     fatherNo: '',
-    careGiveName: '',
-    careGiveNo: '',
+    careGiverFirstName: '',
+    careGiverMiddleName: '',
+    careGiverLastName: '',
+    careGiverNo: '',
+    showDate: false,
   };
 
   componentDidMount() {
@@ -69,10 +77,21 @@ class RegisterChildScreen extends PureComponent {
     this.setState({[id]: text});
   };
 
+  onChangeDate = (event, selectedDate) => {
+    const currentDate = selectedDate || this.state.date;
+
+    this.setState({dob: currentDate, showDate: !this.state.showDate});
+    // setShow(Platform.OS === 'ios' ? true : false);
+  };
+
+  onToggleDate = () => {
+    this.setState({showDate: !this.state.showDate});
+  };
+
   onSubmit() {
     const newData = {...this.state};
-    newData.id = this.props.children.length + 1;
-    newData.date = '19/2/2020';
+    // newData.id = this.props.children.length + 1;
+    newData.dob = newData.dob.toString();
     this.props.addChild(newData);
     this.props.navigation.navigate('Biometrics');
   }
@@ -92,12 +111,34 @@ class RegisterChildScreen extends PureComponent {
               <Text style={styles.sectionText}>BASIC INFORMATION</Text>
               <View style={styles.formPart}>
                 <View style={styles.formControl}>
-                  <Text style={styles.inputText}>Child's Name</Text>
+                  <Text style={styles.inputText}>Child's First Name</Text>
                   <TextInput
                     style={styles.input}
-                    placeholder="Input childs full name"
-                    onChangeText={text => this.onChange('childName', text)}
-                    value={this.state.childName}
+                    placeholder="Input Childs first name"
+                    onChangeText={text => this.onChange('childFirstName', text)}
+                    value={this.state.childFirstName}
+                  />
+                </View>
+                <View style={styles.formControl}>
+                  <Text style={styles.inputText}>Child’s Middle Name</Text>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Input Childs middle"
+                    onChangeText={text =>
+                      this.onChange('childMiddleName', text)
+                    }
+                    value={this.state.childMiddleName}
+                  />
+                </View>
+              </View>
+              <View style={styles.formPart}>
+                <View style={styles.formControl}>
+                  <Text style={styles.inputText}>Child's Last Name</Text>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Input childs last name"
+                    onChangeText={text => this.onChange('childLastName', text)}
+                    value={this.state.childLastName}
                   />
                 </View>
                 <View style={styles.formControl}>
@@ -116,21 +157,37 @@ class RegisterChildScreen extends PureComponent {
                 <View style={styles.formHorizontal}>
                   <View style={styles.formHorizontalContainer}>
                     <Text style={styles.inputText}>Childs Sex</Text>
-                    <TextInput
-                      style={styles.input}
-                      onChangeText={text => this.onChange('childSex', text)}
-                      value={this.state.childSex}
-                      // placeholder="Input childs Position in family"
-                    />
+                    <View style={{...styles.input, padding: 0}}>
+                      <Picker
+                        selectedValue={this.state.childSex}
+                        onValueChange={(itemValue, itemIndex) =>
+                          this.onChange('childSex', itemValue)
+                        }>
+                        <Picker.Item label="Male" value="male" />
+                        <Picker.Item label="Female" value="female" />
+                      </Picker>
+                    </View>
                   </View>
                   <View style={styles.formHorizontalContainer}>
                     <Text style={styles.inputText}>Date of Birth</Text>
-                    <TextInput
+                    <TouchableOpacity
                       style={styles.input}
-                      onChangeText={text => this.onChange('dob', text)}
-                      value={this.state.dob}
-                      // placeholder="Input childs Position in family"
-                    />
+                      onPress={this.onToggleDate}>
+                      <Text style={{paddingVertical: 5}}>
+                        {moment(this.state.dob).format('L')}
+                      </Text>
+                    </TouchableOpacity>
+                    {this.state.showDate && (
+                      <DateTimePicker
+                        testID="dateTimePicker"
+                        timeZoneOffsetInMinutes={0}
+                        value={this.state.dob}
+                        mode="date"
+                        is24Hour={true}
+                        display="default"
+                        onChange={this.onChangeDate}
+                      />
+                    )}
                   </View>
                 </View>
                 <View style={styles.formControl}>
@@ -290,12 +347,38 @@ class RegisterChildScreen extends PureComponent {
               </View>
               <View style={styles.formPart}>
                 <View style={styles.formControl}>
-                  <Text style={styles.inputText}>Care givers Name</Text>
+                  <Text style={styles.inputText}>Care givers First Name</Text>
                   <TextInput
                     style={styles.input}
-                    placeholder="Input care giver’s name"
-                    onChangeText={text => this.onChange('careGiveName', text)}
-                    value={this.state.careGiveName}
+                    placeholder="Input care giver’s first name"
+                    onChangeText={text =>
+                      this.onChange('careGiverFirstName', text)
+                    }
+                    value={this.state.careGiverFirstName}
+                  />
+                </View>
+                <View style={styles.formControl}>
+                  <Text style={styles.inputText}>Care givers Middle Name</Text>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Input care giver’s middle name"
+                    onChangeText={text =>
+                      this.onChange('careGiverMiddleName', text)
+                    }
+                    value={this.state.careGiverMiddleName}
+                  />
+                </View>
+              </View>
+              <View style={styles.formPart}>
+                <View style={styles.formControl}>
+                  <Text style={styles.inputText}>Care givers Last Name</Text>
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Input care giver’s last name"
+                    onChangeText={text =>
+                      this.onChange('careGiverLastName', text)
+                    }
+                    value={this.state.careGiverLastName}
                   />
                 </View>
                 <View style={styles.formControl}>
@@ -303,8 +386,8 @@ class RegisterChildScreen extends PureComponent {
                   <TextInput
                     style={styles.input}
                     placeholder="Input care giver’s GSM number"
-                    onChangeText={text => this.onChange('careGiveNo', text)}
-                    value={this.state.careGiveNo}
+                    onChangeText={text => this.onChange('careGiverNo', text)}
+                    value={this.state.careGiverNo}
                   />
                 </View>
               </View>
@@ -361,7 +444,7 @@ const styles = StyleSheet.create({
   input: {
     borderColor: 'rgba(33, 150, 83, 0.5)',
     borderWidth: 2,
-    padding: 10,
+    padding: 11,
     borderRadius: 8,
   },
   formHorizontal: {

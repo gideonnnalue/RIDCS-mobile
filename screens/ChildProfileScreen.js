@@ -18,15 +18,15 @@ class ChildProfileScreen extends PureComponent {
     childData: null,
   };
 
-  getData = id => {
-    const data = this.props.route.params.children.filter(el => el.id === id);
-    this.setState({childData: data[0]});
+  getData = (id, child) => {
+    this.setState({childData: child});
   };
 
   componentDidMount() {
     this.props.route.params && this.props.route.params.id
-      ? this.getData(this.props.route.params.id)
+      ? this.getData(this.props.route.params.id, this.props.route.params.child)
       : null;
+    // this.props.getChildRecord(0)
   }
 
   toggleModal() {
@@ -45,6 +45,10 @@ class ChildProfileScreen extends PureComponent {
         <AdministerModal
           modalVisible={this.state.modalVisible}
           closeModal={() => this.toggleModal()}
+          firstName={this.state.childData.firstName}
+          middleName={this.state.childData.middleName}
+          lastName={this.state.childData.lastName}
+          id={this.state.childData.id}
         />
         <View style={styles.head}>
           <LinearGradient
@@ -60,11 +64,11 @@ class ChildProfileScreen extends PureComponent {
               <View style={styles.headSection}>
                 <Text style={styles.headText}>
                   <Text style={styles.headBold}>Name:</Text>{' '}
-                  {this.state.childData.childName}
+                  {`${this.state.childData.firstName} ${this.state.childData.middleName} ${this.state.childData.lastName}`}
                 </Text>
                 <Text style={styles.headText}>
                   <Text style={styles.headBold}>Care Giver:</Text>{' '}
-                  {this.state.childData.careGiveName}
+                  {`${this.state.childData.careGiverFirstName} ${this.state.childData.careGiverMiddleName} ${this.state.childData.careGiverLastName}`}
                 </Text>
                 <Text style={styles.headText}>
                   <Text style={styles.headBold}>Card No.:</Text> N78DJJ8D9KEOK
@@ -108,11 +112,11 @@ class ChildProfileScreen extends PureComponent {
                 </Text>
                 <Text style={styles.pageText}>
                   <Text style={styles.pageTextBold}>Town/City:</Text>{' '}
-                  {this.state.childData.townCity}
+                  {this.state.childData.city}
                 </Text>
                 <Text style={styles.pageText}>
                   <Text style={styles.pageTextBold}>Village settlement:</Text>{' '}
-                  {this.state.childData.villageSettle}
+                  {this.state.childData.settlement}
                 </Text>
               </View>
               <View style={styles.pageHorizontalPart}>

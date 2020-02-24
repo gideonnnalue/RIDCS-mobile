@@ -9,6 +9,7 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import {SectionGrid} from 'react-native-super-grid';
 import {HeaderButtons, Item} from 'react-navigation-header-buttons';
@@ -18,6 +19,8 @@ import HeaderButton from '../components/HeaderButton';
 import TopHeader from '../components/TopHeader';
 import dummyData from '../data/dummy-data';
 
+import {loadChildRecords, getChildRecord} from '../store/actions/child';
+
 const ChildTab = props => {
   return (
     <TouchableOpacity style={styles.childTab} onPress={props.onNavigate}>
@@ -25,8 +28,14 @@ const ChildTab = props => {
         style={styles.childImg}
         source={require('../assets/img/bebe.png')}
       />
-      <Text style={styles.childFullName}>{props.childName}</Text>
-      <Text style={styles.childParentName}>{props.motherName}</Text>
+      <Text
+        style={
+          styles.childFullName
+        }>{`${props.firstName} ${props.middleName} ${props.lastName}`}</Text>
+      <Text
+        style={
+          styles.childParentName
+        }>{`${props.careGiverFirstName} ${props.careGiverMiddleName} ${props.careGiverLastName}`}</Text>
       <Text style={styles.childRegNo}>{'N89JDJI97899'}</Text>
     </TouchableOpacity>
   );
@@ -35,6 +44,7 @@ const ChildTab = props => {
 class AllChildrenScreen extends PureComponent {
   componentDidMount() {
     console.log(this.props.children);
+    this.props.loadChildRecords();
     BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
     this.props.navigation.setOptions({
       headerLeft: () => (
@@ -60,10 +70,23 @@ class AllChildrenScreen extends PureComponent {
   }
 
   goToChildProfile(id) {
-    this.props.navigation.navigate('ChildProfile', {
-      id,
-      children: this.props.children,
-    });
+    this.props
+      .getChildRecord(id)
+      .then(data => {
+        console.log(data);
+        this.props.navigation.navigate('ChildProfile', {
+          id,
+          child: data,
+        });
+      })
+      .catch(err => {
+        Alert.alert(
+          'Data unavailable',
+          "The selected child's data is unavailable",
+          [{text: 'ok'}],
+        );
+        console.log(err.message);
+      });
   }
 
   render() {
@@ -87,11 +110,14 @@ class AllChildrenScreen extends PureComponent {
             renderItem={({item}) => (
               <ChildTab
                 img={item.img}
+                firstName={item.firstName}
+                middleName={item.middleName}
+                lastName={item.lastName}
                 fullName={item.fullName}
-                parentName={item.parentName}
+                careGiverFirstName={item.careGiverFirstName}
+                careGiverMiddleName={item.careGiverMiddleName}
+                careGiverLastName={item.careGiverLastName}
                 regNo={item.regNo}
-                childName={item.childName}
-                motherName={item.motherName}
                 onNavigate={() => this.goToChildProfile(item.id)}
               />
             )}
@@ -112,6 +138,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 10,
     paddingBottom: 115,
+    width: '100%',
   },
   childSection: {
     backgroundColor: '#ddd',
@@ -122,7 +149,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
   },
-  // childList: {flex: 1, width: '100%'},
+  childList: {width: '100%'},
   childTab: {
     padding: 5,
     backgroundColor: 'white',
@@ -144,10 +171,12 @@ const styles = StyleSheet.create({
     color: '#303030',
     fontWeight: 'bold',
     fontSize: 13,
+    textAlign: 'center',
   },
   childParentName: {
     color: '#757575',
     fontSize: 13,
+    textAlign: 'center',
   },
   childRegNo: {
     color: '#2ECC71',
@@ -159,4 +188,6 @@ const mapStateToProps = state => ({
   children: state.child.children,
 });
 
-export default connect(mapStateToProps)(AllChildrenScreen);
+export default connect(mapStateToProps, {loadChildRecords, getChildRecord})(
+  AllChildrenScreen,
+);
