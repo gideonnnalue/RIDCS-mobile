@@ -26,7 +26,7 @@ class LoginScreen extends PureComponent {
           <View style={styles.form}>
             <Image
               source={require('../assets/img/logo.png')}
-              style={{width: 70, height: 70}}
+              style={{width: 100, height: 100}}
             />
             <View style={styles.formControl}>
               <Text style={styles.inputName}>Username</Text>

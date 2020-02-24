@@ -21,13 +21,13 @@ const TopHeader = props => {
 
 const styles = StyleSheet.create({
   topHeader: {
-    width: '100%',
+    width: '95%',
   },
   topHeaderBackground: {
-    width: '100%',
+    width: '95%',
     paddingBottom: 10,
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 30,
     paddingTop: 10,
     paddingHorizontal: 15,
   },

@@ -19,10 +19,12 @@ class BiometricsScreen extends PureComponent {
   render() {
     return (
       <View>
-        <TopHeader>Biometrics</TopHeader>
+        <TopHeader>
+        <Text style={styles.headingHead}>Input Biometrics Data</Text>
+        </TopHeader>
         <ScrollView style={styles.screen}>
           <View style={styles.heading}>
-            <Text style={styles.headingHead}>Input Biometrics Data</Text>
+            
             <View style={styles.headingData}>
               <Text style={styles.headingText}>
                 - Make sure the persons hands is properly clean to improve
@@ -126,7 +128,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   headingHead: {
-    color: '#37474F',
+    color: '#ffffff',
     fontSize: 18,
     fontWeight: 'bold',
   },

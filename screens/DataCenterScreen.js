@@ -48,7 +48,7 @@ const chartConfig = {
 class DataCenterScreen extends PureComponent {
   state = {
     data: {
-      labels: ['Week 6', 'Week 7', 'Week 8', 'Week 9', 'Week 11', 'Week 12'],
+      labels: ['Week 6', 'Week 7', 'Week 8', 'Week 9', 'Week 10', 'Week 11'],
       datasets: [
         {
           data: [
@@ -64,10 +64,10 @@ class DataCenterScreen extends PureComponent {
       ],
     },
     barData: {
-      labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+      labels: ['BCG', 'HBV 0', 'OPV 0', 'Penta 1', 'OPV 1', 'PCV 1', 'Rota 1'],
       datasets: [
         {
-          data: [20, 45, 28, 80, 99, 43],
+          data: [35, 45, 57, 45, 60, 43, 50],
         },
       ],
     },
@@ -207,8 +207,8 @@ class DataCenterScreen extends PureComponent {
                 <Text style={styles.graphText}>Fixed Sessions Planned</Text>
                 <LineChart
                   data={this.state.data}
-                  width={500} // from react-native
-                  height={220}
+                  width={700} // from react-native
+                  height={250}
                   chartConfig={chartConfig}
                   style={{
                     marginVertical: 8,
@@ -218,7 +218,7 @@ class DataCenterScreen extends PureComponent {
               </View>
               <View style={styles.graphSection}>
                 <Text style={styles.graphText}>
-                  Number of vaccine doses open
+                  Number of Children Immunized
                 </Text>
                 <BarChart
                   style={{
@@ -226,9 +226,9 @@ class DataCenterScreen extends PureComponent {
                     borderRadius: 16,
                   }}
                   data={this.state.barData}
-                  width={screenWidth}
-                  height={220}
-                  yAxisLabel="$"
+                  width={700}
+                  height={250}
+                  yAxisLabel=""
                   chartConfig={chartConfig}
                   verticalLabelRotation={30}
                 />
@@ -269,6 +269,7 @@ const styles = StyleSheet.create({
   },
   body: {
     padding: 10,
+    flexDirection: 'row'
   },
   graphContainer: {flex: 1},
   tabsContainer: {flex: 1},

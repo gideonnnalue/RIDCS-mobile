@@ -12,8 +12,8 @@ import {
 
 class ChildDailyTallyScreen extends PureComponent {
   state = {
-    tableTitle1: ['', '', 'FIXED SESSION', 'OUTREACH SESSION'],
-    tableTitle2: ['Antigens', 'Age Group', 'Tally', 'Summary'],
+    tableTitle1: ['ANTIGENS', 'FIXED SESSION', 'OUTREACH SESSION'],
+    tableTitle2: ['Age Groups', 'Monthly Summary', 'Monthly Summary'],
     tableTitle3: [
       'Hep.B 0',
       'OPV 0',
@@ -115,6 +115,7 @@ class ChildDailyTallyScreen extends PureComponent {
     return (
       <View style={styles.container}>
         <View>
+          <Text style={styles.dateText}>Select Month to View Data</Text>
           <Text style={styles.dateText}>Selected Month: January 2020</Text>
         </View>
         <ScrollView horizontal={true}>
@@ -124,13 +125,13 @@ class ChildDailyTallyScreen extends PureComponent {
                 <Row
                   data={this.state.tableTitle1}
                   style={styles.headerStyle}
-                  widthArr={[150, 200, 200, 200]}
+                  widthArr={[350, 300, 300]}
                   textStyle={styles.headerTextStyle}
                 />
                 <Row
                   data={this.state.tableTitle2}
                   style={styles.headerStyle}
-                  widthArr={[150, 200, 200, 200]}
+                  widthArr={[350, 300, 300]}
                   textStyle={styles.headerTextStyle}
                 />
               </Table>
@@ -153,7 +154,7 @@ class ChildDailyTallyScreen extends PureComponent {
                         key={i}
                         data={data}
                         style={{height: 30, backgroundColor: clr}}
-                        widthArr={[200, 200, 200]}
+                        widthArr={[200, 300, 300]}
                         textStyle={{
                           color: '#333333',
                           textAlign: 'left',

@@ -12,9 +12,9 @@ import {
 
 class ChildDailyTallyScreen extends PureComponent {
   state = {
-    tableTitle1: ['', '', 'FIXED SESSION', 'OUTREACH SESSION'],
-    tableTitle2: ['Antigens', 'Age Group', 'Summary', 'Summary'],
-    tableTitle3: [
+    tableMainHeader: ['ANTIGENS', 'FIXED SESSION', 'OUTREACH SESSION'],
+    tableSubHeader: ['Age Group', 'Tally', 'Daily Summary', 'Tally', 'Daily Summary'],
+    tableSideHeader: [
       'Hep.B 0',
       'OPV 0',
       'BCG',
@@ -46,16 +46,16 @@ class ChildDailyTallyScreen extends PureComponent {
       'COMMENTS',
     ],
     data: [
-      ['0-24 Hours', '0 - 2', '', '', ''],
-      ['24 Hours - 2 Weeks', '1 - 2', '', '', ''],
+      ['0-24 Hours', '2', '0', '0', '0', '0'],
+      ['24 Hours - 2 Weeks', '0', '', '', ''],
       ['0-2 Weeks', '2', '', '', ''],
-      ['0-11 Months', '1 - 1', '', '', ''],
-      ['6 Weeks - 11 Months', '1 - 1', '', '', ''],
+      ['0-11 Months', '1', '', '', ''],
+      ['6 Weeks - 11 Months', '1', '', '', ''],
       ['12-23 Months', '', '', '', ''],
-      ['6 Weeks - 11 Months', '1 - 1', '', '', ''],
-      ['12-23 Months', '', '', '', ''],
-      ['6 Weeks - 11 Months', '', '', '', ''],
-      ['12-23 Months', '', '', '', ''],
+      ['6 Weeks - 11 Months', '1', '', '', ''],
+      ['12-23 Months', '0', '', '', ''],
+      ['6 Weeks - 11 Months', '0', '', '', ''],
+      ['12-23 Months', '0', '', '', ''],
       ['6 Weeks - 11 Months', '', '', '', ''],
       ['12-23 Months', '', '', '', ''],
       ['10 Weeks - 11 Months', '', '', '', ''],
@@ -100,7 +100,7 @@ class ChildDailyTallyScreen extends PureComponent {
   };
 
   dataArr = () => {
-    const arr = new Array(this.state.tableTitle3.length).fill(60);
+    const arr = new Array(this.state.tableSideHeader.length).fill(60);
     arr[1] = 30;
     arr[2] = 30;
     arr[15] = 30;
@@ -115,22 +115,24 @@ class ChildDailyTallyScreen extends PureComponent {
     return (
       <View style={styles.container}>
         <View>
-          <Text style={styles.dateText}>Date: 20th February, 2020</Text>
+          <Text style={styles.dateText}>Date of Session: 20th February, 2020</Text>
+          <Text style={styles.dateText}>Select Date of Session to View:</Text>
         </View>
+        
         <ScrollView horizontal={true}>
           <ScrollView>
             <View style={styles.tableContainer}>
               <Table borderStyle={styles.tableBorderStyle}>
                 <Row
-                  data={this.state.tableTitle1}
+                  data={this.state.tableMainHeader}
                   style={styles.headerStyle}
-                  widthArr={[150, 200, 200, 200]}
+                  widthArr={[350, 300, 300]}
                   textStyle={styles.headerTextStyle}
                 />
                 <Row
-                  data={this.state.tableTitle2}
+                  data={this.state.tableSubHeader}
                   style={styles.headerStyle}
-                  widthArr={[150, 200, 200, 200]}
+                  widthArr={[350, 150, 150, 150, 150]}
                   textStyle={styles.headerTextStyle}
                 />
               </Table>
@@ -139,7 +141,7 @@ class ChildDailyTallyScreen extends PureComponent {
                   style={{width: 150}}
                   borderStyle={styles.tableBorderStyle}>
                   <Col
-                    data={this.state.tableTitle3}
+                    data={this.state.tableSideHeader}
                     heightArr={this.dataArr()}
                     style={styles.headerRightStyle}
                     textStyle={styles.headerRightText}
@@ -153,7 +155,7 @@ class ChildDailyTallyScreen extends PureComponent {
                         key={i}
                         data={data}
                         style={{height: 30, backgroundColor: clr}}
-                        widthArr={[200, 200, 200]}
+                        widthArr={[200, 150, 150, 150, 150]}
                         textStyle={{
                           color: '#333333',
                           textAlign: 'left',
