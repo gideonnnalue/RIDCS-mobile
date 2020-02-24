@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import {
   Modal,
   Text,
@@ -11,30 +12,82 @@ import {
   CheckBox,
   TextInput,
 } from 'react-native';
+import moment from 'moment';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/AntDesign';
+import {addChildVaccine} from '../store/actions/child';
 
 class AdministerModal extends Component {
   state = {
     hbv: {
       text: '',
-      check: 'pending',
-      refused: 'no',
+      taken: false,
+      refused: false,
       remark: '',
     },
     opv: {
       text: '',
-      check: 'pending',
-      refused: 'no',
+      taken: false,
+      refused: false,
       remark: '',
     },
     bcg: {
       text: '',
-      check: 'pending',
-      refused: 'no',
+      taken: false,
+      refused: false,
       remark: '',
     },
+    opv1: {
+      text: '',
+      taken: false,
+      refused: false,
+      remark: '',
+    },
+    penta1: {
+      text: '',
+      taken: false,
+      refused: false,
+      remark: '',
+    },
+    rota1: {
+      text: '',
+      taken: false,
+      refused: false,
+      remark: '',
+    },
+    sessionType: {
+      text: '',
+    },
+    siteName: {
+      text: '',
+    },
+    childWeight: {
+      text: '',
+    },
   };
+
+  componentDidMount() {
+    // console.log(this.props.children);
+  }
+
+  onTextChanged(id, type, data) {
+    const newType = {...this.state[id]};
+    newType[type] = data;
+    this.setState({[id]: newType});
+  }
+
+  onCheckChanged(id, type) {
+    console.log(id, type);
+    const newType = {...this.state[id]};
+    newType[type] = !newType[type];
+    this.setState({[id]: newType});
+  }
+
+  onSubmit = id => {
+    this.props.addChildVaccine(id, this.state);
+    this.props.closeModal();
+  };
+
   render() {
     return (
       <Modal
@@ -64,7 +117,8 @@ class AdministerModal extends Component {
             <View style={styles.modalBody}>
               <View style={styles.userData}>
                 <Text style={styles.userDataText}>
-                  <Text style={styles.userDataBold}>Name:</Text> Emeka Femi Musa
+                  <Text style={styles.userDataBold}>Name:</Text>{' '}
+                  {`${this.props.firstName} ${this.props.middleName} ${this.props.lastName}`}
                 </Text>
                 <Text style={styles.userDataText}>
                   <Text style={styles.userDataBold}>Age:</Text> 0 weeks and 2
@@ -79,22 +133,44 @@ class AdministerModal extends Component {
                 <View style={styles.vaccineHorizontal}>
                   <View style={styles.vaccineVertical}>
                     <View style={styles.checkBoxContainer}>
-                      <CheckBox />
-                      <Text>TAKEN</Text>
+                      <CheckBox
+                        value={this.state.hbv.taken}
+                        onValueChange={() =>
+                          this.onCheckChanged('hbv', 'taken')
+                        }
+                      />
+                      <Text>{this.state.hbv.taken ? 'TAKEN' : 'PENDING'}</Text>
                     </View>
                     <View style={styles.textInputContainer}>
                       <Text>Vaccine Batch Number</Text>
-                      <TextInput style={styles.input} />
+                      <TextInput
+                        style={styles.input}
+                        onChangeText={text =>
+                          this.onTextChanged('hbv', 'text', text)
+                        }
+                        value={this.state.hbv.text}
+                      />
                     </View>
                   </View>
                   <View style={styles.vaccineVertical}>
                     <View style={styles.checkBoxContainer}>
-                      <CheckBox />
+                      <CheckBox
+                        value={this.state.hbv.refused}
+                        onValueChange={() =>
+                          this.onCheckChanged('hbv', 'refused')
+                        }
+                      />
                       <Text>Was the vaccine refused by care giver?</Text>
                     </View>
                     <View style={styles.textInputContainer}>
                       <Text>Other Remarks (e.g. out of stock/given)</Text>
-                      <TextInput style={styles.input} />
+                      <TextInput
+                        style={styles.input}
+                        onChangeText={text =>
+                          this.onTextChanged('hbv', 'remark', text)
+                        }
+                        value={this.state.hbv.remark}
+                      />
                     </View>
                   </View>
                 </View>
@@ -107,22 +183,44 @@ class AdministerModal extends Component {
                 <View style={styles.vaccineHorizontal}>
                   <View style={styles.vaccineVertical}>
                     <View style={styles.checkBoxContainer}>
-                      <CheckBox />
-                      <Text>PENDING</Text>
+                      <CheckBox
+                        value={this.state.opv.taken}
+                        onValueChange={() =>
+                          this.onCheckChanged('opv', 'taken')
+                        }
+                      />
+                      <Text>{this.state.opv.taken ? 'TAKEN' : 'PENDING'}</Text>
                     </View>
                     <View style={styles.textInputContainer}>
                       <Text>Vaccine Batch Number</Text>
-                      <TextInput style={styles.input} />
+                      <TextInput
+                        style={styles.input}
+                        onChangeText={text =>
+                          this.onTextChanged('opv', 'text', text)
+                        }
+                        value={this.state.opv.text}
+                      />
                     </View>
                   </View>
                   <View style={styles.vaccineVertical}>
                     <View style={styles.checkBoxContainer}>
-                      <CheckBox />
+                      <CheckBox
+                        value={this.state.opv.refused}
+                        onValueChange={() =>
+                          this.onCheckChanged('opv', 'refused')
+                        }
+                      />
                       <Text>Was the vaccine refused by care giver?</Text>
                     </View>
                     <View style={styles.textInputContainer}>
                       <Text>Other Remarks (e.g. out of stock/given)</Text>
-                      <TextInput style={styles.input} />
+                      <TextInput
+                        style={styles.input}
+                        onChangeText={text =>
+                          this.onTextChanged('opv', 'remark', text)
+                        }
+                        value={this.state.opv.remark}
+                      />
                     </View>
                   </View>
                 </View>
@@ -134,22 +232,44 @@ class AdministerModal extends Component {
                 <View style={styles.vaccineHorizontal}>
                   <View style={styles.vaccineVertical}>
                     <View style={styles.checkBoxContainer}>
-                      <CheckBox />
-                      <Text>PENDING</Text>
+                      <CheckBox
+                        value={this.state.bcg.taken}
+                        onValueChange={() =>
+                          this.onCheckChanged('bcg', 'taken')
+                        }
+                      />
+                      <Text>{this.state.bcg.taken ? 'TAKEN' : 'PENDING'}</Text>
                     </View>
                     <View style={styles.textInputContainer}>
                       <Text>Vaccine Batch Number</Text>
-                      <TextInput style={styles.input} />
+                      <TextInput
+                        style={styles.input}
+                        onChangeText={text =>
+                          this.onTextChanged('bcg', 'text', text)
+                        }
+                        value={this.state.bcg.text}
+                      />
                     </View>
                   </View>
                   <View style={styles.vaccineVertical}>
                     <View style={styles.checkBoxContainer}>
-                      <CheckBox />
+                      <CheckBox
+                        value={this.state.bcg.refused}
+                        onValueChange={() =>
+                          this.onCheckChanged('bcg', 'refused')
+                        }
+                      />
                       <Text>Was the vaccine refused by care giver?</Text>
                     </View>
                     <View style={styles.textInputContainer}>
                       <Text>Other Remarks (e.g. out of stock/given)</Text>
-                      <TextInput style={styles.input} />
+                      <TextInput
+                        style={styles.input}
+                        onChangeText={text =>
+                          this.onTextChanged('bcg', 'remark', text)
+                        }
+                        value={this.state.bcg.remark}
+                      />
                     </View>
                   </View>
                 </View>
@@ -162,22 +282,44 @@ class AdministerModal extends Component {
                 <View style={styles.vaccineHorizontal}>
                   <View style={styles.vaccineVertical}>
                     <View style={styles.checkBoxContainer}>
-                      <CheckBox />
-                      <Text>PENDING</Text>
+                      <CheckBox
+                        value={this.state.opv1.taken}
+                        onValueChange={() =>
+                          this.onCheckChanged('opv1', 'taken')
+                        }
+                      />
+                      <Text>{this.state.opv1.taken ? 'TAKEN' : 'PENDING'}</Text>
                     </View>
                     <View style={styles.textInputContainer}>
                       <Text>Vaccine Batch Number</Text>
-                      <TextInput style={styles.input} />
+                      <TextInput
+                        style={styles.input}
+                        onChangeText={text =>
+                          this.onTextChanged('opv1', 'text', text)
+                        }
+                        value={this.state.opv1.text}
+                      />
                     </View>
                   </View>
                   <View style={styles.vaccineVertical}>
                     <View style={styles.checkBoxContainer}>
-                      <CheckBox />
+                      <CheckBox
+                        value={this.state.opv1.refused}
+                        onValueChange={() =>
+                          this.onCheckChanged('opv1', 'refused')
+                        }
+                      />
                       <Text>Was the vaccine refused by care giver?</Text>
                     </View>
                     <View style={styles.textInputContainer}>
                       <Text>Other Remarks (e.g. out of stock/given)</Text>
-                      <TextInput style={styles.input} />
+                      <TextInput
+                        style={styles.input}
+                        onChangeText={text =>
+                          this.onTextChanged('opv1', 'remark', text)
+                        }
+                        value={this.state.opv1.remark}
+                      />
                     </View>
                   </View>
                 </View>
@@ -190,22 +332,46 @@ class AdministerModal extends Component {
                 <View style={styles.vaccineHorizontal}>
                   <View style={styles.vaccineVertical}>
                     <View style={styles.checkBoxContainer}>
-                      <CheckBox />
-                      <Text>PENDING</Text>
+                      <CheckBox
+                        value={this.state.penta1.taken}
+                        onValueChange={() =>
+                          this.onCheckChanged('penta1', 'taken')
+                        }
+                      />
+                      <Text>
+                        {this.state.penta1.taken ? 'TAKEN' : 'PENDING'}
+                      </Text>
                     </View>
                     <View style={styles.textInputContainer}>
                       <Text>Vaccine Batch Number</Text>
-                      <TextInput style={styles.input} />
+                      <TextInput
+                        style={styles.input}
+                        onChangeText={text =>
+                          this.onTextChanged('penta1', 'text', text)
+                        }
+                        value={this.state.penta1.text}
+                      />
                     </View>
                   </View>
                   <View style={styles.vaccineVertical}>
                     <View style={styles.checkBoxContainer}>
-                      <CheckBox />
+                      <CheckBox
+                        value={this.state.penta1.refused}
+                        onValueChange={() =>
+                          this.onCheckChanged('penta1', 'refused')
+                        }
+                      />
                       <Text>Was the vaccine refused by care giver?</Text>
                     </View>
                     <View style={styles.textInputContainer}>
                       <Text>Other Remarks (e.g. out of stock/given)</Text>
-                      <TextInput style={styles.input} />
+                      <TextInput
+                        style={styles.input}
+                        onChangeText={text =>
+                          this.onTextChanged('penta1', 'remark', text)
+                        }
+                        value={this.state.penta1.remark}
+                      />
                     </View>
                   </View>
                 </View>
@@ -218,39 +384,82 @@ class AdministerModal extends Component {
                 <View style={styles.vaccineHorizontal}>
                   <View style={styles.vaccineVertical}>
                     <View style={styles.checkBoxContainer}>
-                      <CheckBox />
-                      <Text>PENDING</Text>
+                      <CheckBox
+                        value={this.state.rota1.taken}
+                        onValueChange={() =>
+                          this.onCheckChanged('rota1', 'taken')
+                        }
+                      />
+                      <Text>
+                        {this.state.rota1.taken ? 'TAKEN' : 'PENDING'}
+                      </Text>
                     </View>
                     <View style={styles.textInputContainer}>
                       <Text>Vaccine Batch Number</Text>
-                      <TextInput style={styles.input} />
+                      <TextInput
+                        style={styles.input}
+                        onChangeText={text =>
+                          this.onTextChanged('rota1', 'text', text)
+                        }
+                        value={this.state.rota1.text}
+                      />
                     </View>
                   </View>
                   <View style={styles.vaccineVertical}>
                     <View style={styles.checkBoxContainer}>
-                      <CheckBox />
+                      <CheckBox
+                        value={this.state.rota1.refused}
+                        onValueChange={() =>
+                          this.onCheckChanged('rota1', 'refused')
+                        }
+                      />
                       <Text>Was the vaccine refused by care giver?</Text>
                     </View>
                     <View style={styles.textInputContainer}>
                       <Text>Other Remarks (e.g. out of stock/given)</Text>
-                      <TextInput style={styles.input} />
+                      <TextInput
+                        style={styles.input}
+                        onChangeText={text =>
+                          this.onTextChanged('rota1', 'remark', text)
+                        }
+                        value={this.state.rota1.remark}
+                      />
                     </View>
                   </View>
                 </View>
               </View>
+
               <View style={styles.vaccineSection}>
                 <View style={styles.vaccineHorizontal}>
                   <View style={styles.textInputContainer}>
                     <Text>Session Type</Text>
-                    <TextInput style={styles.input} />
+                    <TextInput
+                      style={styles.input}
+                      onChangeText={text =>
+                        this.onTextChanged('sessionType', 'text', text)
+                      }
+                      value={this.state.sessionType.text}
+                    />
                   </View>
                   <View style={styles.textInputContainer}>
                     <Text>Site Name (for outreach/mobile)</Text>
-                    <TextInput style={styles.input} />
+                    <TextInput
+                      style={styles.input}
+                      onChangeText={text =>
+                        this.onTextChanged('siteName', 'text', text)
+                      }
+                      value={this.state.siteName.text}
+                    />
                   </View>
                   <View style={styles.textInputContainer}>
                     <Text>Weight of the Child</Text>
-                    <TextInput style={styles.input} />
+                    <TextInput
+                      style={styles.input}
+                      onChangeText={text =>
+                        this.onTextChanged('childWeight', 'text', text)
+                      }
+                      value={this.state.childWeight.text}
+                    />
                   </View>
                 </View>
               </View>
@@ -260,15 +469,15 @@ class AdministerModal extends Component {
                   30E
                 </Text>
                 <Text style={styles.vaccineText}>
-                  <Text style={styles.vaccineTextBold}>Date/Timesamp:</Text> 18
-                  Feb 2020, 12:08:56 PM
+                  <Text style={styles.vaccineTextBold}>Date/Timesamp:</Text>{' '}
+                  {moment().format('MMMM Do YYYY, h:mm:ss a')}
                 </Text>
               </View>
               <View style={styles.buttonContainer}>
                 <TouchableOpacity
                   style={styles.button}
                   onPress={() => {
-                    this.props.closeModal();
+                    this.onSubmit(this.props.id);
                   }}>
                   <LinearGradient
                     colors={['#27AE60', 'rgba(33, 150, 83, 1)']}
@@ -370,4 +579,8 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AdministerModal;
+const mapStateToProps = state => ({
+  children: state.child.children,
+});
+
+export default connect(mapStateToProps, {addChildVaccine})(AdministerModal);

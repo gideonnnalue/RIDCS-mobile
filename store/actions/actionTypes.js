@@ -1,1 +1,4 @@
 export const ADD_CHILD = 'ADD_CHILD';
+export const SET_CHILD_RECORDS = 'SET_CHILD_RECORDS';
+
+export const ADD_CHILD_VACCINE = 'ADD_CHILD_VACCINE';

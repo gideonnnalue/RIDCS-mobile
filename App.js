@@ -6,16 +6,17 @@ import ReduxThunk from 'redux-thunk';
 import AppNavigation from './navigation/AppNavigation';
 
 import childReducer from './store/reducer/child';
-// import {init} from './helper/db';
+import {init, dropChldRecordsTable} from './helper/db';
 
-// init()
-//   .then(() => {
-//     console.log('Initialized database');
-//   })
-//   .catch(err => {
-//     console.log('Initializing db failed');
-//     console.log(err);
-//   });
+init()
+  .then(() => {
+    console.log('Initialized database');
+    // dropChldRecordsTable().then(() => console.log('table droped'));
+  })
+  .catch(err => {
+    console.log('Initializing db failed');
+    console.log(err);
+  });
 
 const rootReducer = combineReducers({
   child: childReducer,

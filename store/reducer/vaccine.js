@@ -1,9 +1,9 @@
 import {ADD_CHILD, SET_CHILD_RECORDS} from '../actions/actionTypes';
 
 const INITIAL_STATE = {
-  children: [],
-  child: null,
-  loading: false,
+  vaccines: [],
+  //   child: null,
+  //   loading: false,
 };
 
 export default (state = INITIAL_STATE, {type, payload}) => {
