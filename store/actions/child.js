@@ -3,8 +3,9 @@ import {
   fetchChildRecords,
   selectChildRecord,
   insertChildVaccine,
+  selectChildVaccine,
 } from '../../helper/db';
-import {ADD_CHILD, SET_CHILD_RECORDS} from './actionTypes';
+import {ADD_CHILD, SET_CHILD_RECORDS, SET_VACCINES} from './actionTypes';
 import moment from 'moment';
 
 export const addChild = data => async dispatch => {
@@ -132,5 +133,39 @@ export const addChildVaccine = (id, data) => async dispatch => {
     dispatch(loadChildRecords());
   } catch (err) {
     console.log(err);
+  }
+};
+
+export const loadChildTally = () => async dispatch => {
+  const today = moment().format('L');
+  const vaccines = ['hbv', 'opv', 'bcg', 'opv1', 'penta1', 'rota1'];
+  try {
+    // const data = await selectChildVaccine('hbv', today.toString());
+    // console.log(data);
+    let finalData;
+    const promises = vaccines.map(async (el, i) => {
+      let data;
+      try {
+        data = await selectChildVaccine(el, today.toString());
+      } catch (err) {
+        console.log(err);
+      }
+      data.vaccine = el;
+      return data;
+    });
+    finalData = await Promise.all(promises);
+
+    let vaccineData = [];
+    finalData.forEach(el => {
+      vaccineData.push({
+        vaccineName: el.vaccine,
+        vaccineLength: el.rows.length,
+      });
+    });
+    // console.log(vaccineData);
+    dispatch({type: SET_VACCINES, payload: vaccineData});
+  } catch (err) {
+    console.log(err);
+    throw err;
   }
 };
